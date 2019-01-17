@@ -7,26 +7,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
-import com.techyourchance.journeytodependencyinjection.Constants;
-import com.techyourchance.journeytodependencyinjection.networking.SingleQuestionResponseSchema;
-import com.techyourchance.journeytodependencyinjection.networking.StackoverflowApi;
+import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
+import com.techyourchance.journeytodependencyinjection.questions.QuestionWithBody;
 import com.techyourchance.journeytodependencyinjection.screens.common.ServerErrorDialogFragment;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class QuestionDetailsActivity extends AppCompatActivity implements
-        Callback<SingleQuestionResponseSchema>, QuestionDetailsViewMvc.Listener {
+        QuestionDetailsViewMvc.Listener, FetchQuestionDetailsUseCase.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
     private QuestionDetailsViewMvc mViewMvc;
 
-    private StackoverflowApi mStackoverflowApi;
-    private Call<SingleQuestionResponseSchema> mCall;
+    private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+
     private String mQuestionId;
 
     public static void start(Context context, String questionId) {
@@ -42,51 +35,47 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
         setContentView(mViewMvc.getRootView());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mStackoverflowApi = retrofit.create(StackoverflowApi.class);
+        mFetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase();
 
         //noinspection ConstantConditions
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mViewMvc.registerListener(this);
-        mCall = mStackoverflowApi.questionDetails(mQuestionId);
-        mCall.enqueue(this);
+        mFetchQuestionDetailsUseCase.registerListener(this);
+        mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(mQuestionId);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mViewMvc.unregisterListener(this);
-        if (mCall != null) {
-            mCall.cancel();
-        }
+        mFetchQuestionDetailsUseCase.unregisterListener(this);
     }
 
+    /**
+     * Callback Method of {@link FetchQuestionDetailsUseCase.Listener} invoked on success of
+     * the API Request Call for the detail of the {@code question} to be loaded.
+     *
+     * @param question Instance of {@link QuestionWithBody} downloaded for the request.
+     */
     @Override
-    public void onResponse(Call<SingleQuestionResponseSchema> call, Response<SingleQuestionResponseSchema> response) {
-        SingleQuestionResponseSchema questionResponseSchema;
-        if (response.isSuccessful() && (questionResponseSchema = response.body()) != null) {
-            mViewMvc.bindQuestion(questionResponseSchema.getQuestion());
-        } else {
-            onFailure(call, null);
-        }
+    public void onFetchOfQuestionDetailsSucceeded(QuestionWithBody question) {
+        mViewMvc.bindQuestion(question);
     }
 
+    /**
+     * Callback Method of {@link FetchQuestionDetailsUseCase.Listener} invoked on failure of
+     * the API Request Call for the detail of the question to be loaded.
+     */
     @Override
-    public void onFailure(Call<SingleQuestionResponseSchema> call, Throwable t) {
+    public void onFetchOfQuestionDetailsFailed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(ServerErrorDialogFragment.newInstance(), null)
                 .commitAllowingStateLoss();
     }
-
 }
