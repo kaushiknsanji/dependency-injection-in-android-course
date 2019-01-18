@@ -3,16 +3,15 @@ package com.techyourchance.journeytodependencyinjection.screens.questiondetails;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
-import com.techyourchance.journeytodependencyinjection.MyApplication;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.QuestionWithBody;
+import com.techyourchance.journeytodependencyinjection.screens.common.activities.BaseActivity;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.ServerErrorDialogFragment;
 
-public class QuestionDetailsActivity extends AppCompatActivity implements
+public class QuestionDetailsActivity extends BaseActivity implements
         QuestionDetailsViewMvc.Listener, FetchQuestionDetailsUseCase.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
@@ -38,7 +37,7 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
         setContentView(mViewMvc.getRootView());
 
-        mFetchQuestionDetailsUseCase = ((MyApplication) getApplication()).getCompositionRoot().getFetchQuestionDetailsUseCase();
+        mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
 
