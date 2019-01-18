@@ -10,7 +10,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Use case class for encapsulating the logic of obtaining a list of {@link Question}s from the
@@ -21,8 +20,8 @@ public class FetchQuestionsListUseCase extends BaseObservable<FetchQuestionsList
     private StackoverflowApi mStackoverflowApi;
     private Call<QuestionsListResponseSchema> mCall;
 
-    public FetchQuestionsListUseCase(Retrofit retrofit) {
-        mStackoverflowApi = retrofit.create(StackoverflowApi.class);
+    public FetchQuestionsListUseCase(StackoverflowApi stackoverflowApi) {
+        mStackoverflowApi = stackoverflowApi;
     }
 
     public void fetchLastActiveQuestionsAndNotify(int numOfQuestions) {

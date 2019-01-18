@@ -7,7 +7,6 @@ import com.techyourchance.journeytodependencyinjection.networking.StackoverflowA
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Use case class for encapsulating the logic of obtaining the details of
@@ -18,8 +17,8 @@ public class FetchQuestionDetailsUseCase extends BaseObservable<FetchQuestionDet
     private StackoverflowApi mStackoverflowApi;
     private Call<SingleQuestionResponseSchema> mCall;
 
-    public FetchQuestionDetailsUseCase(Retrofit retrofit) {
-        mStackoverflowApi = retrofit.create(StackoverflowApi.class);
+    public FetchQuestionDetailsUseCase(StackoverflowApi stackoverflowApi) {
+        mStackoverflowApi = stackoverflowApi;
     }
 
     public void fetchQuestionDetailsAndNotify(String questionId) {

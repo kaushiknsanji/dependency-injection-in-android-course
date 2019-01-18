@@ -32,7 +32,7 @@ public class QuestionsListActivity extends AppCompatActivity implements
         setContentView(mViewMvc.getRootView());
 
         mFetchQuestionsListUseCase = new FetchQuestionsListUseCase(
-                ((MyApplication) getApplication()).getRetrofit()
+                ((MyApplication) getApplication()).getStackoverflowApi()
         );
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());

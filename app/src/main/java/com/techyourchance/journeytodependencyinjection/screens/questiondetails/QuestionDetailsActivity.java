@@ -39,7 +39,7 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         setContentView(mViewMvc.getRootView());
 
         mFetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase(
-                ((MyApplication) getApplication()).getRetrofit()
+                ((MyApplication) getApplication()).getStackoverflowApi()
         );
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
