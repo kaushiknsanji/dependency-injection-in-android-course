@@ -4,6 +4,8 @@ import android.app.Application;
 import android.support.annotation.UiThread;
 
 import com.techyourchance.journeytodependencyinjection.networking.StackoverflowApi;
+import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
+import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -47,6 +49,26 @@ public class MyApplication extends Application {
             mStackoverflowApi = getRetrofit().create(StackoverflowApi.class);
         }
         return mStackoverflowApi;
+    }
+
+    /**
+     * Method that creates and returns a {@link FetchQuestionsListUseCase} instance
+     *
+     * @return A {@link FetchQuestionsListUseCase} instance
+     */
+    @UiThread
+    public FetchQuestionsListUseCase getFetchQuestionsListUseCase() {
+        return new FetchQuestionsListUseCase(getStackoverflowApi());
+    }
+
+    /**
+     * Method that creates and returns a {@link FetchQuestionDetailsUseCase} instance
+     *
+     * @return A {@link FetchQuestionDetailsUseCase} instance
+     */
+    @UiThread
+    public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
+        return new FetchQuestionDetailsUseCase(getStackoverflowApi());
     }
 
 }

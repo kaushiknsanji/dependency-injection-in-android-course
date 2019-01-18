@@ -38,9 +38,7 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
         setContentView(mViewMvc.getRootView());
 
-        mFetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase(
-                ((MyApplication) getApplication()).getStackoverflowApi()
-        );
+        mFetchQuestionDetailsUseCase = ((MyApplication) getApplication()).getFetchQuestionDetailsUseCase();
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
 
