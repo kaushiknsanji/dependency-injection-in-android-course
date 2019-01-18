@@ -1,6 +1,5 @@
 package com.techyourchance.journeytodependencyinjection.questions;
 
-import com.techyourchance.journeytodependencyinjection.Constants;
 import com.techyourchance.journeytodependencyinjection.common.BaseObservable;
 import com.techyourchance.journeytodependencyinjection.networking.QuestionsListResponseSchema;
 import com.techyourchance.journeytodependencyinjection.networking.StackoverflowApi;
@@ -12,7 +11,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Use case class for encapsulating the logic of obtaining a list of {@link Question}s from the
@@ -23,13 +21,7 @@ public class FetchQuestionsListUseCase extends BaseObservable<FetchQuestionsList
     private StackoverflowApi mStackoverflowApi;
     private Call<QuestionsListResponseSchema> mCall;
 
-    public FetchQuestionsListUseCase() {
-        // init retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
+    public FetchQuestionsListUseCase(Retrofit retrofit) {
         mStackoverflowApi = retrofit.create(StackoverflowApi.class);
     }
 

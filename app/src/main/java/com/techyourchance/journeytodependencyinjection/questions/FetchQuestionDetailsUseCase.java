@@ -1,6 +1,5 @@
 package com.techyourchance.journeytodependencyinjection.questions;
 
-import com.techyourchance.journeytodependencyinjection.Constants;
 import com.techyourchance.journeytodependencyinjection.common.BaseObservable;
 import com.techyourchance.journeytodependencyinjection.networking.SingleQuestionResponseSchema;
 import com.techyourchance.journeytodependencyinjection.networking.StackoverflowApi;
@@ -9,7 +8,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Use case class for encapsulating the logic of obtaining the details of
@@ -20,13 +18,7 @@ public class FetchQuestionDetailsUseCase extends BaseObservable<FetchQuestionDet
     private StackoverflowApi mStackoverflowApi;
     private Call<SingleQuestionResponseSchema> mCall;
 
-    public FetchQuestionDetailsUseCase() {
-        // init retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
+    public FetchQuestionDetailsUseCase(Retrofit retrofit) {
         mStackoverflowApi = retrofit.create(StackoverflowApi.class);
     }
 

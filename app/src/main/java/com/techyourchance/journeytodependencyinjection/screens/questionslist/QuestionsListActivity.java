@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
+import com.techyourchance.journeytodependencyinjection.MyApplication;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.Question;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
@@ -30,7 +31,9 @@ public class QuestionsListActivity extends AppCompatActivity implements
         mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
         setContentView(mViewMvc.getRootView());
 
-        mFetchQuestionsListUseCase = new FetchQuestionsListUseCase();
+        mFetchQuestionsListUseCase = new FetchQuestionsListUseCase(
+                ((MyApplication) getApplication()).getRetrofit()
+        );
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
     }
