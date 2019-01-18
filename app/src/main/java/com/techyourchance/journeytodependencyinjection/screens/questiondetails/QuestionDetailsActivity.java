@@ -3,13 +3,13 @@ package com.techyourchance.journeytodependencyinjection.screens.questiondetails;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.QuestionWithBody;
-import com.techyourchance.journeytodependencyinjection.screens.common.ServerErrorDialogFragment;
+import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
+import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.ServerErrorDialogFragment;
 
 public class QuestionDetailsActivity extends AppCompatActivity implements
         QuestionDetailsViewMvc.Listener, FetchQuestionDetailsUseCase.Listener {
@@ -19,6 +19,8 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
     private QuestionDetailsViewMvc mViewMvc;
 
     private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+
+    private DialogsManager mDialogsManager;
 
     private String mQuestionId;
 
@@ -36,6 +38,8 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         setContentView(mViewMvc.getRootView());
 
         mFetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase();
+
+        mDialogsManager = new DialogsManager(getSupportFragmentManager());
 
         //noinspection ConstantConditions
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
@@ -73,9 +77,6 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
      */
     @Override
     public void onFetchOfQuestionDetailsFailed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss();
+        mDialogsManager.showRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "");
     }
 }

@@ -1,13 +1,13 @@
 package com.techyourchance.journeytodependencyinjection.screens.questionslist;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.Question;
-import com.techyourchance.journeytodependencyinjection.screens.common.ServerErrorDialogFragment;
+import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
+import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.ServerErrorDialogFragment;
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsActivity;
 
 import java.util.List;
@@ -21,6 +21,8 @@ public class QuestionsListActivity extends AppCompatActivity implements
 
     private FetchQuestionsListUseCase mFetchQuestionsListUseCase;
 
+    private DialogsManager mDialogsManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,8 @@ public class QuestionsListActivity extends AppCompatActivity implements
         setContentView(mViewMvc.getRootView());
 
         mFetchQuestionsListUseCase = new FetchQuestionsListUseCase();
+
+        mDialogsManager = new DialogsManager(getSupportFragmentManager());
     }
 
     @Override
@@ -78,9 +82,6 @@ public class QuestionsListActivity extends AppCompatActivity implements
      */
     @Override
     public void onFetchOfQuestionsFailed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss();
+        mDialogsManager.showRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "");
     }
 }
