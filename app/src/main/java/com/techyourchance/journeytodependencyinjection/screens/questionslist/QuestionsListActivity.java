@@ -31,7 +31,7 @@ public class QuestionsListActivity extends AppCompatActivity implements
         mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
         setContentView(mViewMvc.getRootView());
 
-        mFetchQuestionsListUseCase = ((MyApplication) getApplication()).getFetchQuestionsListUseCase();
+        mFetchQuestionsListUseCase = ((MyApplication) getApplication()).getCompositionRoot().getFetchQuestionsListUseCase();
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
     }

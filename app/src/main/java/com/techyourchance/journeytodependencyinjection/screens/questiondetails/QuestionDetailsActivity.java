@@ -38,7 +38,7 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
         setContentView(mViewMvc.getRootView());
 
-        mFetchQuestionDetailsUseCase = ((MyApplication) getApplication()).getFetchQuestionDetailsUseCase();
+        mFetchQuestionDetailsUseCase = ((MyApplication) getApplication()).getCompositionRoot().getFetchQuestionDetailsUseCase();
 
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
 
