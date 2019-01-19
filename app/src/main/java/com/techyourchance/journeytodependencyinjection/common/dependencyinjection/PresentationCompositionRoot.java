@@ -1,10 +1,12 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection;
 
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
+import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
 
 /**
  * Composition Class for creating and exposing services, tied to the Activity/Fragment Lifecycle.
@@ -17,15 +19,19 @@ public class PresentationCompositionRoot {
     //FragmentManager instance to manage the Fragments
     private final FragmentManager mFragmentManager;
 
+    //LayoutInflater instance to inflate views
+    private final LayoutInflater mLayoutInflater;
+
     /**
      * Constructor of {@link PresentationCompositionRoot}
-     *
      * @param compositionRoot Instance of App {@link CompositionRoot}
      * @param fragmentManager Instance of {@link FragmentManager} to manage Fragments
+     * @param layoutInflater Instance of {@link LayoutInflater} for inflating the views
      */
-    public PresentationCompositionRoot(CompositionRoot compositionRoot, FragmentManager fragmentManager) {
+    public PresentationCompositionRoot(CompositionRoot compositionRoot, FragmentManager fragmentManager, LayoutInflater layoutInflater) {
         mCompositionRoot = compositionRoot;
         mFragmentManager = fragmentManager;
+        mLayoutInflater = layoutInflater;
     }
 
     /**
@@ -53,5 +59,15 @@ public class PresentationCompositionRoot {
      */
     public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
         return mCompositionRoot.getFetchQuestionDetailsUseCase();
+    }
+
+    /**
+     * Method that creates and returns a {@link ViewMvcFactory} instance
+     * for instantiating MVC Views
+     *
+     * @return A {@link ViewMvcFactory} instance
+     */
+    public ViewMvcFactory getViewMvcFactory() {
+        return new ViewMvcFactory(mLayoutInflater);
     }
 }

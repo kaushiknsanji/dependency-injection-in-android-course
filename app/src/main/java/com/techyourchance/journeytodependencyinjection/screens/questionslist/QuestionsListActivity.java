@@ -1,7 +1,6 @@
 package com.techyourchance.journeytodependencyinjection.screens.questionslist;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.Question;
@@ -27,7 +26,7 @@ public class QuestionsListActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
+        mViewMvc = getCompositionRoot().getViewMvcFactory().newInstance(QuestionsListViewMvc.class, null);
         setContentView(mViewMvc.getRootView());
 
         mFetchQuestionsListUseCase = getCompositionRoot().getFetchQuestionsListUseCase();
