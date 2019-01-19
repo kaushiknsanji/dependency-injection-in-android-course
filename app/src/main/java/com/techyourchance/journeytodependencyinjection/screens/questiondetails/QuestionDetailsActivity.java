@@ -39,7 +39,7 @@ public class QuestionDetailsActivity extends BaseActivity implements
 
         mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
 
-        mDialogsManager = new DialogsManager(getSupportFragmentManager());
+        mDialogsManager = getCompositionRoot().getDialogsManager();
 
         //noinspection ConstantConditions
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);

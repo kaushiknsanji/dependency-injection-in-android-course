@@ -11,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Composition class for creating and exposing services
+ * Composition class for creating and exposing services, tied to the Application Lifecycle.
  */
 @UiThread
 public class CompositionRoot {
