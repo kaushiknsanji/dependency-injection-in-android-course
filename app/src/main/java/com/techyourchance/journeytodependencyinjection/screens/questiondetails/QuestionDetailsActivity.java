@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
-import com.techyourchance.journeytodependencyinjection.questions.QuestionWithBody;
+import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
 import com.techyourchance.journeytodependencyinjection.screens.common.activities.BaseActivity;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.ServerErrorDialogFragment;
@@ -63,10 +63,10 @@ public class QuestionDetailsActivity extends BaseActivity implements
      * Callback Method of {@link FetchQuestionDetailsUseCase.Listener} invoked on success of
      * the API Request Call for the detail of the {@code question} to be loaded.
      *
-     * @param question Instance of {@link QuestionWithBody} downloaded for the request.
+     * @param question Instance of {@link QuestionDetails} downloaded for the request.
      */
     @Override
-    public void onFetchOfQuestionDetailsSucceeded(QuestionWithBody question) {
+    public void onFetchOfQuestionDetailsSucceeded(QuestionDetails question) {
         mViewMvc.bindQuestion(question);
     }
 

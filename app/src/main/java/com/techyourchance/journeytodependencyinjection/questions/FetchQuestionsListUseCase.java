@@ -1,9 +1,11 @@
 package com.techyourchance.journeytodependencyinjection.questions;
 
 import com.techyourchance.journeytodependencyinjection.common.BaseObservable;
+import com.techyourchance.journeytodependencyinjection.networking.QuestionSchema;
 import com.techyourchance.journeytodependencyinjection.networking.QuestionsListResponseSchema;
 import com.techyourchance.journeytodependencyinjection.networking.StackoverflowApi;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class FetchQuestionsListUseCase extends BaseObservable<FetchQuestionsList
             public void onResponse(Call<QuestionsListResponseSchema> call, Response<QuestionsListResponseSchema> response) {
                 QuestionsListResponseSchema responseSchema;
                 if (response.isSuccessful() && (responseSchema = response.body()) != null) {
-                    notifySucceeded(responseSchema.getQuestions());
+                    notifySucceeded(questionsFromQuestionSchemas(responseSchema.getQuestions()));
                 } else {
                     notifyFailed();
                 }
@@ -44,6 +46,14 @@ public class FetchQuestionsListUseCase extends BaseObservable<FetchQuestionsList
                 notifyFailed();
             }
         });
+    }
+
+    private List<Question> questionsFromQuestionSchemas(List<QuestionSchema> questionSchemas) {
+        List<Question> questions = new ArrayList<>(questionSchemas.size());
+        for (QuestionSchema questionSchema : questionSchemas) {
+            questions.add(new Question(questionSchema.getId(), questionSchema.getTitle()));
+        }
+        return questions;
     }
 
     private void notifySucceeded(List<Question> questions) {

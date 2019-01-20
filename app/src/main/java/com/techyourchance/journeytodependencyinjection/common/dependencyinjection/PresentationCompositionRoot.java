@@ -1,10 +1,12 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
+import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoader;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
 
@@ -16,22 +18,17 @@ public class PresentationCompositionRoot {
     //CompositionRoot instance tied to the Application Lifecycle
     private final CompositionRoot mCompositionRoot;
 
-    //FragmentManager instance to manage the Fragments
-    private final FragmentManager mFragmentManager;
-
-    //LayoutInflater instance to inflate views
-    private final LayoutInflater mLayoutInflater;
+    //Activity instance
+    private final AppCompatActivity mActivity;
 
     /**
      * Constructor of {@link PresentationCompositionRoot}
      * @param compositionRoot Instance of App {@link CompositionRoot}
-     * @param fragmentManager Instance of {@link FragmentManager} to manage Fragments
-     * @param layoutInflater Instance of {@link LayoutInflater} for inflating the views
+     * @param activity Instance of {@link AppCompatActivity}
      */
-    public PresentationCompositionRoot(CompositionRoot compositionRoot, FragmentManager fragmentManager, LayoutInflater layoutInflater) {
+    public PresentationCompositionRoot(CompositionRoot compositionRoot, AppCompatActivity activity) {
         mCompositionRoot = compositionRoot;
-        mFragmentManager = fragmentManager;
-        mLayoutInflater = layoutInflater;
+        mActivity = activity;
     }
 
     /**
@@ -40,7 +37,7 @@ public class PresentationCompositionRoot {
      * @return A {@link DialogsManager} instance to manage Dialogs
      */
     public DialogsManager getDialogsManager() {
-        return new DialogsManager(mFragmentManager);
+        return new DialogsManager(getFragmentManager());
     }
 
     /**
@@ -68,6 +65,42 @@ public class PresentationCompositionRoot {
      * @return A {@link ViewMvcFactory} instance
      */
     public ViewMvcFactory getViewMvcFactory() {
-        return new ViewMvcFactory(mLayoutInflater);
+        return new ViewMvcFactory(getLayoutInflater(), getImageLoader());
+    }
+
+    /**
+     * Method that obtains the {@link LayoutInflater} from the given context.
+     *
+     * @return Instance of {@link LayoutInflater}
+     */
+    private LayoutInflater getLayoutInflater() {
+        return LayoutInflater.from(mActivity);
+    }
+
+    /**
+     * Method that obtains the {@link FragmentManager} for managing the Fragments
+     *
+     * @return Instance of {@link FragmentManager}
+     */
+    private FragmentManager getFragmentManager() {
+        return mActivity.getSupportFragmentManager();
+    }
+
+    /**
+     * Getter for the Activity registered
+     *
+     * @return Instance of {@link AppCompatActivity} registered
+     */
+    private AppCompatActivity getActivity() {
+        return mActivity;
+    }
+
+    /**
+     * Method that creates and returns an {@link ImageLoader} instance
+     *
+     * @return An {@link ImageLoader} instance
+     */
+    private ImageLoader getImageLoader() {
+        return new ImageLoader(getActivity());
     }
 }

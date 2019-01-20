@@ -1,8 +1,8 @@
-package com.techyourchance.journeytodependencyinjection.questions;
+package com.techyourchance.journeytodependencyinjection.networking;
 
 import com.google.gson.annotations.SerializedName;
 
-public class QuestionWithBody {
+public class QuestionSchema {
 
     @SerializedName("title")
     private final String mTitle;
@@ -13,10 +13,14 @@ public class QuestionWithBody {
     @SerializedName("body")
     private final String mBody;
 
-    public QuestionWithBody(String title, String id, String body) {
+    @SerializedName("owner")
+    private final UserSchema mOwner;
+
+    public QuestionSchema(String title, String id, String body, UserSchema owner) {
         mTitle = title;
         mId = id;
         mBody = body;
+        mOwner = owner;
     }
 
     public String getTitle() {
@@ -30,4 +34,9 @@ public class QuestionWithBody {
     public String getBody() {
         return mBody;
     }
+
+    public UserSchema getOwner() {
+        return mOwner;
+    }
+
 }

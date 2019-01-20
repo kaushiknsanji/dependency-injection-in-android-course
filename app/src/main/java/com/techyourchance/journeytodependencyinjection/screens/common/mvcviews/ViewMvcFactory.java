@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoader;
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewMvc;
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewMvcImpl;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewMvc;
@@ -17,13 +18,18 @@ public class ViewMvcFactory {
     //LayoutInflater instance to inflate views
     private final LayoutInflater mLayoutInflater;
 
+    //Instance of ImageLoader to download images
+    private final ImageLoader mImageLoader;
+
     /**
      * Constructor of {@link ViewMvcFactory}
      *
      * @param layoutInflater Instance of {@link LayoutInflater} for inflating the views
+     * @param imageLoader Instance of {@link ImageLoader} to download images
      */
-    public ViewMvcFactory(LayoutInflater layoutInflater) {
+    public ViewMvcFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
         mLayoutInflater = layoutInflater;
+        mImageLoader = imageLoader;
     }
 
     /**
@@ -41,7 +47,7 @@ public class ViewMvcFactory {
         if (mvcViewClass == QuestionsListViewMvc.class) {
             viewMvc = new QuestionsListViewMvcImpl(mLayoutInflater, container);
         } else if (mvcViewClass == QuestionDetailsViewMvc.class) {
-            viewMvc = new QuestionDetailsViewMvcImpl(mLayoutInflater, container);
+            viewMvc = new QuestionDetailsViewMvcImpl(mLayoutInflater, container, mImageLoader);
         } else {
             throw new IllegalArgumentException("Unsupported MVC view class " + mvcViewClass);
         }

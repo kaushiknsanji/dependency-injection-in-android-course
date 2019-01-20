@@ -3,10 +3,12 @@ package com.techyourchance.journeytodependencyinjection.screens.questiondetails;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techyourchance.journeytodependencyinjection.R;
-import com.techyourchance.journeytodependencyinjection.questions.QuestionWithBody;
+import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
+import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoader;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.BaseViewMvc;
 
 /**
@@ -16,20 +18,27 @@ import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.B
 public class QuestionDetailsViewMvcImpl extends BaseViewMvc<QuestionDetailsViewMvc.Listener>
         implements QuestionDetailsViewMvc {
 
+    private final ImageLoader mImageLoader;
+    private final TextView mTxtUserDisplayName;
+    private final ImageView mImgUserAvatar;
     private TextView mTxtQuestionBody;
 
-    public QuestionDetailsViewMvcImpl(LayoutInflater layoutInflater, ViewGroup container) {
+    public QuestionDetailsViewMvcImpl(LayoutInflater layoutInflater, ViewGroup container, ImageLoader imageLoader) {
         setRootView(layoutInflater.inflate(R.layout.layout_question_details, container, false));
+        mImageLoader = imageLoader;
+
         mTxtQuestionBody = findViewById(R.id.txt_question_body);
+        mTxtUserDisplayName = findViewById(R.id.txt_user_display_name);
+        mImgUserAvatar = findViewById(R.id.img_user_avatar);
     }
 
     /**
-     * Method that binds the {@link QuestionWithBody} data to the View.
+     * Method that binds the {@link QuestionDetails} data to the View.
      *
-     * @param question Instance of {@link QuestionWithBody}
+     * @param question Instance of {@link QuestionDetails}
      */
     @Override
-    public void bindQuestion(QuestionWithBody question) {
+    public void bindQuestion(QuestionDetails question) {
         String questionBody = question.getBody();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -37,5 +46,8 @@ public class QuestionDetailsViewMvcImpl extends BaseViewMvc<QuestionDetailsViewM
         } else {
             mTxtQuestionBody.setText(Html.fromHtml(questionBody));
         }
+
+        mTxtUserDisplayName.setText(question.getUserDisplayName());
+        mImageLoader.loadImage(question.getUserAvatarUrl(), mImgUserAvatar);
     }
 }

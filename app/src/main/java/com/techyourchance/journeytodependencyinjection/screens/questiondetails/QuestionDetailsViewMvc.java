@@ -1,6 +1,6 @@
 package com.techyourchance.journeytodependencyinjection.screens.questiondetails;
 
-import com.techyourchance.journeytodependencyinjection.questions.QuestionWithBody;
+import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ObservableViewMvc;
 
 /**
@@ -9,11 +9,11 @@ import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.O
 public interface QuestionDetailsViewMvc extends ObservableViewMvc<QuestionDetailsViewMvc.Listener> {
 
     /**
-     * Method that binds the {@link QuestionWithBody} data to the View.
+     * Method that binds the {@link QuestionDetails} data to the View.
      *
-     * @param question Instance of {@link QuestionWithBody}
+     * @param question Instance of {@link QuestionDetails}
      */
-    void bindQuestion(QuestionWithBody question);
+    void bindQuestion(QuestionDetails question);
 
     /**
      * Listener for user actions
