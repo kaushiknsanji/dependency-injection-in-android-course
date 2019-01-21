@@ -16,8 +16,8 @@ import com.techyourchance.journeytodependencyinjection.common.dependencyinjectio
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
-    //CompositionRoot instance tied to the Activity
-    private PresentationCompositionRoot mPresentationCompositionRoot;
+    //Tracks if the Injector is used more than once in an Activity
+    private boolean mIsInjectorUsed;
 
     /**
      * Method that creates and returns the {@link Injector} instance
@@ -26,22 +26,24 @@ public class BaseActivity extends AppCompatActivity {
      */
     @UiThread
     protected Injector getInjector() {
+        if (mIsInjectorUsed) {
+            //Throwing exception when invoked more than once in the same Activity
+            throw new RuntimeException("No need to use Injector more than once");
+        }
+        mIsInjectorUsed = true;
         return new Injector(getCompositionRoot());
     }
 
     /**
      * Method that creates and returns the CompositionRoot tied to the Activity Lifecycle.
      *
-     * @return A New or existing instance of {@link PresentationCompositionRoot}
+     * @return A New instance of {@link PresentationCompositionRoot}
      */
     private PresentationCompositionRoot getCompositionRoot() {
-        if (mPresentationCompositionRoot == null) {
-            mPresentationCompositionRoot = new PresentationCompositionRoot(
+        return new PresentationCompositionRoot(
                     getAppCompositionRoot(),
                     this
-            );
-        }
-        return mPresentationCompositionRoot;
+        );
     }
 
     /**
