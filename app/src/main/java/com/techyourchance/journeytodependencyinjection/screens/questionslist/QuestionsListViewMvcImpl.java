@@ -1,5 +1,6 @@
 package com.techyourchance.journeytodependencyinjection.screens.questionslist;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -75,8 +76,9 @@ public class QuestionsListViewMvcImpl extends BaseViewMvc<QuestionsListViewMvc.L
             notifyDataSetChanged();
         }
 
+        @NonNull
         @Override
-        public QuestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_question_list_item, parent, false);
 
@@ -84,7 +86,7 @@ public class QuestionsListViewMvcImpl extends BaseViewMvc<QuestionsListViewMvc.L
         }
 
         @Override
-        public void onBindViewHolder(QuestionViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
             holder.mTitle.setText(mQuestionsList.get(position).getTitle());
         }
 
