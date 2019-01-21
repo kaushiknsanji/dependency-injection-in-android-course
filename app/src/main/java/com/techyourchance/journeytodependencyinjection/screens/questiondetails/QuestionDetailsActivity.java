@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.Service;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
 import com.techyourchance.journeytodependencyinjection.screens.common.activities.BaseActivity;
@@ -16,9 +17,12 @@ public class QuestionDetailsActivity extends BaseActivity implements
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
-    public ViewMvcFactory mViewMvcFactory;
-    public FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
-    public DialogsManager mDialogsManager;
+    @Service
+    private ViewMvcFactory mViewMvcFactory;
+    @Service
+    private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+    @Service
+    private DialogsManager mDialogsManager;
 
     private QuestionDetailsViewMvc mViewMvc;
     private String mQuestionId;
