@@ -5,9 +5,9 @@ import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 
 import com.techyourchance.journeytodependencyinjection.MyApplication;
-import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.CompositionRoot;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.Injector;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.PresentationCompositionRoot;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
 
 /**
  * An {@link AppCompatActivity} class which is the base class
@@ -41,18 +41,18 @@ public class BaseActivity extends AppCompatActivity {
      */
     private PresentationCompositionRoot getCompositionRoot() {
         return new PresentationCompositionRoot(
-                    getAppCompositionRoot(),
+                getApplicationComponent(),
                     this
         );
     }
 
     /**
-     * Method that returns {@link CompositionRoot} instance
+     * Method that returns {@link ApplicationComponent} instance
      *
-     * @return A {@link CompositionRoot} instance
+     * @return An {@link ApplicationComponent} instance
      */
-    private CompositionRoot getAppCompositionRoot() {
-        return ((MyApplication) getApplication()).getCompositionRoot();
+    private ApplicationComponent getApplicationComponent() {
+        return ((MyApplication) getApplication()).getApplicationComponent();
     }
 
 }

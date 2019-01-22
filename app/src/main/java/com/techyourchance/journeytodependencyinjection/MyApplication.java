@@ -2,15 +2,17 @@ package com.techyourchance.journeytodependencyinjection;
 
 import android.app.Application;
 
-import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.CompositionRoot;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationModule;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.DaggerApplicationComponent;
 
 /**
- * {@link Application} class for exposing {@link CompositionRoot}
+ * {@link Application} class for exposing {@link ApplicationComponent}
  */
 public class MyApplication extends Application {
 
-    //CompositionRoot for exposing instances of services
-    private CompositionRoot mCompositionRoot;
+    //Dagger Component for exposing instances of services
+    private ApplicationComponent mApplicationComponent;
 
     /**
      * Called when the application is starting, before any activity, service,
@@ -25,16 +27,18 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //Initializing CompositionRoot
-        mCompositionRoot = new CompositionRoot();
+        //Initializing the Application Component
+        mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule())
+                .build();
     }
 
     /**
-     * Method that returns {@link CompositionRoot} instance
+     * Method that returns {@link ApplicationComponent} instance
      *
-     * @return A {@link CompositionRoot} instance
+     * @return An {@link ApplicationComponent} instance
      */
-    public CompositionRoot getCompositionRoot() {
-        return mCompositionRoot;
+    public ApplicationComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 }

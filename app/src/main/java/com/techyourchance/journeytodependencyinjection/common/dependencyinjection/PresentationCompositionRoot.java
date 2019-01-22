@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoader;
@@ -15,19 +16,20 @@ import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.V
  */
 public class PresentationCompositionRoot {
 
-    //CompositionRoot instance tied to the Application Lifecycle
-    private final CompositionRoot mCompositionRoot;
+    //ApplicationComponent instance tied to the Application Lifecycle
+    private final ApplicationComponent mApplicationComponent;
 
     //Activity instance
     private final AppCompatActivity mActivity;
 
     /**
      * Constructor of {@link PresentationCompositionRoot}
-     * @param compositionRoot Instance of App {@link CompositionRoot}
+     *
+     * @param applicationComponent Instance of {@link ApplicationComponent}
      * @param activity Instance of {@link AppCompatActivity}
      */
-    public PresentationCompositionRoot(CompositionRoot compositionRoot, AppCompatActivity activity) {
-        mCompositionRoot = compositionRoot;
+    public PresentationCompositionRoot(ApplicationComponent applicationComponent, AppCompatActivity activity) {
+        mApplicationComponent = applicationComponent;
         mActivity = activity;
     }
 
@@ -46,7 +48,7 @@ public class PresentationCompositionRoot {
      * @return A {@link FetchQuestionsListUseCase} instance
      */
     public FetchQuestionsListUseCase getFetchQuestionsListUseCase() {
-        return mCompositionRoot.getFetchQuestionsListUseCase();
+        return mApplicationComponent.getFetchQuestionsListUseCase();
     }
 
     /**
@@ -55,7 +57,7 @@ public class PresentationCompositionRoot {
      * @return A {@link FetchQuestionDetailsUseCase} instance
      */
     public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
-        return mCompositionRoot.getFetchQuestionDetailsUseCase();
+        return mApplicationComponent.getFetchQuestionDetailsUseCase();
     }
 
     /**
