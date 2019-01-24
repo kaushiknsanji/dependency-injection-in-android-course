@@ -1,9 +1,7 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation;
 
-import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
-import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
-import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
-import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
+import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsActivity;
+import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListActivity;
 
 import dagger.Component;
 
@@ -12,11 +10,17 @@ import dagger.Component;
  */
 @Component(modules = PresentationModule.class)
 public interface PresentationComponent {
-    DialogsManager getDialogsManager();
+    /**
+     * Method to inject services into the client {@link QuestionsListActivity}
+     *
+     * @param questionsListActivity Instance of {@link QuestionsListActivity}
+     */
+    void inject(QuestionsListActivity questionsListActivity);
 
-    ViewMvcFactory getViewMvcFactory();
-
-    FetchQuestionsListUseCase getFetchQuestionsListUseCase();
-
-    FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase();
+    /**
+     * Method to inject services into the client {@link QuestionDetailsActivity}
+     *
+     * @param questionDetailsActivity Instance of {@link QuestionDetailsActivity}
+     */
+    void inject(QuestionDetailsActivity questionDetailsActivity);
 }

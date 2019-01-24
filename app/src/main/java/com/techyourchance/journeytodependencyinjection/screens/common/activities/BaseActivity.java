@@ -5,7 +5,6 @@ import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 
 import com.techyourchance.journeytodependencyinjection.MyApplication;
-import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.Injector;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.DaggerPresentationComponent;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationComponent;
@@ -18,22 +17,24 @@ import com.techyourchance.journeytodependencyinjection.common.dependencyinjectio
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
-    //Tracks if the Injector is used more than once in an Activity
-    private boolean mIsInjectorUsed;
+    //Tracks if the PresentationComponent is used more than once in an Activity to inject services
+    private boolean mIsComponentUsed;
 
     /**
-     * Method that creates and returns the {@link Injector} instance
+     * Method that creates and returns the PresentationComponent tied to the Activity Lifecycle.
      *
-     * @return An {@link Injector} instance to inject dependencies
+     * @return A New instance of {@link PresentationComponent}
      */
     @UiThread
-    protected Injector getInjector() {
-        if (mIsInjectorUsed) {
+    protected PresentationComponent getPresentationComponent() {
+        if (mIsComponentUsed) {
             //Throwing exception when invoked more than once in the same Activity
-            throw new RuntimeException("No need to use Injector more than once");
+            throw new RuntimeException("No need to use PresentationComponent more than once");
         }
-        mIsInjectorUsed = true;
-        return new Injector(getPresentationComponent());
+        mIsComponentUsed = true;
+        return DaggerPresentationComponent.builder()
+                .presentationModule(new PresentationModule(getApplicationComponent(), this))
+                .build();
     }
 
     /**
@@ -43,17 +44,6 @@ public class BaseActivity extends AppCompatActivity {
      */
     private ApplicationComponent getApplicationComponent() {
         return ((MyApplication) getApplication()).getApplicationComponent();
-    }
-
-    /**
-     * Method that creates and returns the PresentationComponent tied to the Activity Lifecycle.
-     *
-     * @return A New instance of {@link PresentationComponent}
-     */
-    private PresentationComponent getPresentationComponent() {
-        return DaggerPresentationComponent.builder()
-                .presentationModule(new PresentationModule(getApplicationComponent(), this))
-                .build();
     }
 
 }

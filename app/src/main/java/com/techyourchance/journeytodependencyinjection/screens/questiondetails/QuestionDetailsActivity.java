@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.Service;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
 import com.techyourchance.journeytodependencyinjection.screens.common.activities.BaseActivity;
@@ -12,17 +11,19 @@ import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.Di
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.ServerErrorDialogFragment;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
 
+import javax.inject.Inject;
+
 public class QuestionDetailsActivity extends BaseActivity implements
         QuestionDetailsViewMvc.Listener, FetchQuestionDetailsUseCase.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
-    @Service
-    private ViewMvcFactory mViewMvcFactory;
-    @Service
-    private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
-    @Service
-    private DialogsManager mDialogsManager;
+    @Inject
+    ViewMvcFactory mViewMvcFactory;
+    @Inject
+    FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+    @Inject
+    DialogsManager mDialogsManager;
 
     private QuestionDetailsViewMvc mViewMvc;
     private String mQuestionId;
@@ -37,7 +38,7 @@ public class QuestionDetailsActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Inject the QuestionDetailsActivity's dependencies
-        getInjector().inject(this);
+        getPresentationComponent().inject(this);
 
         mViewMvc = mViewMvcFactory.newInstance(QuestionDetailsViewMvc.class, null);
         setContentView(mViewMvc.getRootView());
