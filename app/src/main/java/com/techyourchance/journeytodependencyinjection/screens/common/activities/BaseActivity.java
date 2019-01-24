@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.techyourchance.journeytodependencyinjection.MyApplication;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.Injector;
-import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.PresentationCompositionRoot;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.DaggerPresentationComponent;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationComponent;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationModule;
 
 /**
  * An {@link AppCompatActivity} class which is the base class
@@ -31,19 +33,7 @@ public class BaseActivity extends AppCompatActivity {
             throw new RuntimeException("No need to use Injector more than once");
         }
         mIsInjectorUsed = true;
-        return new Injector(getCompositionRoot());
-    }
-
-    /**
-     * Method that creates and returns the CompositionRoot tied to the Activity Lifecycle.
-     *
-     * @return A New instance of {@link PresentationCompositionRoot}
-     */
-    private PresentationCompositionRoot getCompositionRoot() {
-        return new PresentationCompositionRoot(
-                getApplicationComponent(),
-                    this
-        );
+        return new Injector(getPresentationComponent());
     }
 
     /**
@@ -53,6 +43,17 @@ public class BaseActivity extends AppCompatActivity {
      */
     private ApplicationComponent getApplicationComponent() {
         return ((MyApplication) getApplication()).getApplicationComponent();
+    }
+
+    /**
+     * Method that creates and returns the PresentationComponent tied to the Activity Lifecycle.
+     *
+     * @return A New instance of {@link PresentationComponent}
+     */
+    private PresentationComponent getPresentationComponent() {
+        return DaggerPresentationComponent.builder()
+                .presentationModule(new PresentationModule(getApplicationComponent(), this))
+                .build();
     }
 
 }

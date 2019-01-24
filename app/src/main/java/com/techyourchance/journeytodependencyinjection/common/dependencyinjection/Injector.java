@@ -1,5 +1,6 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection;
 
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationComponent;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
@@ -9,20 +10,20 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
- * Wrapper Class of {@link PresentationCompositionRoot} to inject required dependencies into the clients.
+ * Wrapper Class of {@link PresentationComponent} to inject required dependencies into the clients.
  */
 public class Injector {
 
-    //Instance of PresentationCompositionRoot for getting the services
-    private final PresentationCompositionRoot mPresentationCompositionRoot;
+    //Instance of PresentationComponent for getting the services
+    private final PresentationComponent mPresentationComponent;
 
     /**
      * Constructor of {@link Injector}
      *
-     * @param presentationCompositionRoot Instance of {@link PresentationCompositionRoot} for getting the services
+     * @param presentationComponent Instance of {@link PresentationComponent} for getting the services
      */
-    public Injector(PresentationCompositionRoot presentationCompositionRoot) {
-        mPresentationCompositionRoot = presentationCompositionRoot;
+    public Injector(PresentationComponent presentationComponent) {
+        mPresentationComponent = presentationComponent;
     }
 
     /**
@@ -88,16 +89,16 @@ public class Injector {
      */
     private Object getServiceForClass(Class<?> type) {
         if (type.equals(DialogsManager.class)) {
-            return mPresentationCompositionRoot.getDialogsManager();
+            return mPresentationComponent.getDialogsManager();
 
         } else if (type.equals(ViewMvcFactory.class)) {
-            return mPresentationCompositionRoot.getViewMvcFactory();
+            return mPresentationComponent.getViewMvcFactory();
 
         } else if (type.equals(FetchQuestionsListUseCase.class)) {
-            return mPresentationCompositionRoot.getFetchQuestionsListUseCase();
+            return mPresentationComponent.getFetchQuestionsListUseCase();
 
         } else if (type.equals(FetchQuestionDetailsUseCase.class)) {
-            return mPresentationCompositionRoot.getFetchQuestionDetailsUseCase();
+            return mPresentationComponent.getFetchQuestionDetailsUseCase();
 
         } else {
             throw new RuntimeException("Unsupported Service type class: " + type);

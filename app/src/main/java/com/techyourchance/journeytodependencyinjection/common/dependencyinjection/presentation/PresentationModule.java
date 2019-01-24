@@ -1,7 +1,8 @@
-package com.techyourchance.journeytodependencyinjection.common.dependencyinjection;
+package com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation;
 
+import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
@@ -11,24 +12,28 @@ import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoade
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
 
+import dagger.Module;
+import dagger.Provides;
+
 /**
- * Composition Class for creating and exposing services, tied to the Activity/Fragment Lifecycle.
+ * Dagger Module for creating and exposing services, tied to the Activity Lifecycle.
  */
-public class PresentationCompositionRoot {
+@Module
+public class PresentationModule {
 
     //ApplicationComponent instance tied to the Application Lifecycle
     private final ApplicationComponent mApplicationComponent;
 
     //Activity instance
-    private final AppCompatActivity mActivity;
+    private final FragmentActivity mActivity;
 
     /**
-     * Constructor of {@link PresentationCompositionRoot}
+     * Constructor of {@link PresentationModule}
      *
      * @param applicationComponent Instance of {@link ApplicationComponent}
-     * @param activity Instance of {@link AppCompatActivity}
+     * @param activity Instance of {@link FragmentActivity}
      */
-    public PresentationCompositionRoot(ApplicationComponent applicationComponent, AppCompatActivity activity) {
+    public PresentationModule(ApplicationComponent applicationComponent, FragmentActivity activity) {
         mApplicationComponent = applicationComponent;
         mActivity = activity;
     }
@@ -36,10 +41,12 @@ public class PresentationCompositionRoot {
     /**
      * Method that creates and returns a {@link DialogsManager} instance
      *
+     * @param fragmentManager Instance of {@link FragmentManager} provided by Dagger.
      * @return A {@link DialogsManager} instance to manage Dialogs
      */
-    public DialogsManager getDialogsManager() {
-        return new DialogsManager(getFragmentManager());
+    @Provides
+    DialogsManager getDialogsManager(FragmentManager fragmentManager) {
+        return new DialogsManager(fragmentManager);
     }
 
     /**
@@ -47,7 +54,8 @@ public class PresentationCompositionRoot {
      *
      * @return A {@link FetchQuestionsListUseCase} instance
      */
-    public FetchQuestionsListUseCase getFetchQuestionsListUseCase() {
+    @Provides
+    FetchQuestionsListUseCase getFetchQuestionsListUseCase() {
         return mApplicationComponent.getFetchQuestionsListUseCase();
     }
 
@@ -56,7 +64,8 @@ public class PresentationCompositionRoot {
      *
      * @return A {@link FetchQuestionDetailsUseCase} instance
      */
-    public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
+    @Provides
+    FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
         return mApplicationComponent.getFetchQuestionDetailsUseCase();
     }
 
@@ -64,19 +73,24 @@ public class PresentationCompositionRoot {
      * Method that creates and returns a {@link ViewMvcFactory} instance
      * for instantiating MVC Views
      *
+     * @param layoutInflater Instance of {@link LayoutInflater} provided by Dagger
+     * @param imageLoader Instance of {@link ImageLoader} provided by Dagger
      * @return A {@link ViewMvcFactory} instance
      */
-    public ViewMvcFactory getViewMvcFactory() {
-        return new ViewMvcFactory(getLayoutInflater(), getImageLoader());
+    @Provides
+    ViewMvcFactory getViewMvcFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
+        return new ViewMvcFactory(layoutInflater, imageLoader);
     }
 
     /**
      * Method that obtains the {@link LayoutInflater} from the given context.
      *
+     * @param activity Instance of {@link Activity} provided by Dagger
      * @return Instance of {@link LayoutInflater}
      */
-    private LayoutInflater getLayoutInflater() {
-        return LayoutInflater.from(mActivity);
+    @Provides
+    LayoutInflater getLayoutInflater(Activity activity) {
+        return LayoutInflater.from(activity);
     }
 
     /**
@@ -84,25 +98,29 @@ public class PresentationCompositionRoot {
      *
      * @return Instance of {@link FragmentManager}
      */
-    private FragmentManager getFragmentManager() {
+    @Provides
+    FragmentManager getFragmentManager() {
         return mActivity.getSupportFragmentManager();
     }
 
     /**
      * Getter for the Activity registered
      *
-     * @return Instance of {@link AppCompatActivity} registered
+     * @return Instance of {@link Activity} registered
      */
-    private AppCompatActivity getActivity() {
+    @Provides
+    Activity getActivity() {
         return mActivity;
     }
 
     /**
      * Method that creates and returns an {@link ImageLoader} instance
      *
+     * @param activity Instance of {@link Activity} provided by Dagger
      * @return An {@link ImageLoader} instance
      */
-    private ImageLoader getImageLoader() {
-        return new ImageLoader(getActivity());
+    @Provides
+    ImageLoader getImageLoader(Activity activity) {
+        return new ImageLoader(activity);
     }
 }
