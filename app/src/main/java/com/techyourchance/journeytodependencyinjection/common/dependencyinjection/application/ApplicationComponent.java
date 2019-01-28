@@ -8,10 +8,10 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * Dagger Component for exposing services from the Module {@link ApplicationModule}
+ * Dagger Component for exposing services from the Module {@link ApplicationModule} and {@link NetworkingModule}
  */
 @Singleton
-@Component(modules = ApplicationModule.class)
+@Component(modules = {ApplicationModule.class, NetworkingModule.class})
 public interface ApplicationComponent {
     /**
      * Method that returns the Subcomponent {@link PresentationComponent}
