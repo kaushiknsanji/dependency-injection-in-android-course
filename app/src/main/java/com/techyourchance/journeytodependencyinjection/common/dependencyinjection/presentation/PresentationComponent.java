@@ -1,5 +1,6 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation;
 
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsActivity;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListActivity;
 
@@ -7,8 +8,10 @@ import dagger.Component;
 
 /**
  * Dagger Component for exposing services from the Module {@link PresentationModule}
+ * and its dependent component {@link ApplicationComponent}
  */
-@Component(modules = PresentationModule.class)
+@PresentationScope
+@Component(dependencies = ApplicationComponent.class, modules = PresentationModule.class)
 public interface PresentationComponent {
     /**
      * Method to inject services into the client {@link QuestionsListActivity}

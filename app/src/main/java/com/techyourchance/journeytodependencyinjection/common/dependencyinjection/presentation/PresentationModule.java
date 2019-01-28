@@ -5,9 +5,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
-import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
-import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
-import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoader;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
@@ -21,20 +18,15 @@ import dagger.Provides;
 @Module
 public class PresentationModule {
 
-    //ApplicationComponent instance tied to the Application Lifecycle
-    private final ApplicationComponent mApplicationComponent;
-
     //Activity instance
     private final FragmentActivity mActivity;
 
     /**
      * Constructor of {@link PresentationModule}
      *
-     * @param applicationComponent Instance of {@link ApplicationComponent}
      * @param activity Instance of {@link FragmentActivity}
      */
-    public PresentationModule(ApplicationComponent applicationComponent, FragmentActivity activity) {
-        mApplicationComponent = applicationComponent;
+    public PresentationModule(FragmentActivity activity) {
         mActivity = activity;
     }
 
@@ -47,26 +39,6 @@ public class PresentationModule {
     @Provides
     DialogsManager getDialogsManager(FragmentManager fragmentManager) {
         return new DialogsManager(fragmentManager);
-    }
-
-    /**
-     * Method that creates and returns a {@link FetchQuestionsListUseCase} instance
-     *
-     * @return A {@link FetchQuestionsListUseCase} instance
-     */
-    @Provides
-    FetchQuestionsListUseCase getFetchQuestionsListUseCase() {
-        return mApplicationComponent.getFetchQuestionsListUseCase();
-    }
-
-    /**
-     * Method that creates and returns a {@link FetchQuestionDetailsUseCase} instance
-     *
-     * @return A {@link FetchQuestionDetailsUseCase} instance
-     */
-    @Provides
-    FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
-        return mApplicationComponent.getFetchQuestionDetailsUseCase();
     }
 
     /**

@@ -33,7 +33,8 @@ public class BaseActivity extends AppCompatActivity {
         }
         mIsComponentUsed = true;
         return DaggerPresentationComponent.builder()
-                .presentationModule(new PresentationModule(getApplicationComponent(), this))
+                .presentationModule(new PresentationModule(this))
+                .applicationComponent(getApplicationComponent())
                 .build();
     }
 
