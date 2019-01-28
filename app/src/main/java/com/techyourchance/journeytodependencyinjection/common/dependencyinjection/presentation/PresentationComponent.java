@@ -4,14 +4,13 @@ import com.techyourchance.journeytodependencyinjection.common.dependencyinjectio
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsActivity;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListActivity;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
 /**
- * Dagger Component for exposing services from the Module {@link PresentationModule}
- * and its dependent component {@link ApplicationComponent}
+ * Dagger Subcomponent for exposing services from the Module {@link PresentationModule}
+ * whose parent component is {@link ApplicationComponent}
  */
-@PresentationScope
-@Component(dependencies = ApplicationComponent.class, modules = PresentationModule.class)
+@Subcomponent(modules = PresentationModule.class)
 public interface PresentationComponent {
     /**
      * Method to inject services into the client {@link QuestionsListActivity}
