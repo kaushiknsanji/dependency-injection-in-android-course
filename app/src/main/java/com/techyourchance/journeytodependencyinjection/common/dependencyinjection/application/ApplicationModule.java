@@ -1,5 +1,7 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application;
 
+import android.app.Application;
+
 import com.techyourchance.journeytodependencyinjection.networking.StackoverflowApi;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
@@ -12,6 +14,18 @@ import dagger.Provides;
  */
 @Module
 public class ApplicationModule {
+
+    //Instance of Application
+    private final Application mApplication;
+
+    /**
+     * Constructor of {@link ApplicationModule}
+     *
+     * @param application Instance of {@link Application}
+     */
+    public ApplicationModule(Application application) {
+        mApplication = application;
+    }
 
     /**
      * Method that creates and returns a {@link FetchQuestionsListUseCase} instance

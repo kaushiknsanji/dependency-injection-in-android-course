@@ -1,6 +1,7 @@
 package com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -69,6 +70,17 @@ public class PresentationModule {
     @Provides
     Activity getActivity() {
         return mActivity;
+    }
+
+    /**
+     * Getter for the {@link Context}
+     *
+     * @param activity Instance of {@link Activity} provided by Dagger
+     * @return Instance of Activity as the {@link Context}
+     */
+    @Provides
+    Context context(Activity activity) {
+        return activity;
     }
 
     /**
