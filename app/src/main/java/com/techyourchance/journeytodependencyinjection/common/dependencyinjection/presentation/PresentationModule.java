@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 
 import com.techyourchance.journeytodependencyinjection.screens.common.ImageLoader;
 import com.techyourchance.journeytodependencyinjection.screens.common.dialogs.DialogsManager;
-import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ViewMvcFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -39,19 +38,6 @@ public class PresentationModule {
     @Provides
     DialogsManager getDialogsManager(FragmentManager fragmentManager) {
         return new DialogsManager(fragmentManager);
-    }
-
-    /**
-     * Method that creates and returns a {@link ViewMvcFactory} instance
-     * for instantiating MVC Views
-     *
-     * @param layoutInflater Instance of {@link LayoutInflater} provided by Dagger
-     * @param imageLoader Instance of {@link ImageLoader} provided by Dagger
-     * @return A {@link ViewMvcFactory} instance
-     */
-    @Provides
-    ViewMvcFactory getViewMvcFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
-        return new ViewMvcFactory(layoutInflater, imageLoader);
     }
 
     /**
