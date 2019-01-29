@@ -2,13 +2,15 @@ package com.techyourchance.journeytodependencyinjection.common.dependencyinjecti
 
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationComponent;
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationModule;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.service.ServiceComponent;
+import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.service.ServiceModule;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 /**
- * Dagger Component for exposing services from the Module {@link ApplicationModule} and {@link NetworkingModule}
+ * Dagger Component for exposing services from the Modules {@link ApplicationModule} and {@link NetworkingModule}
  */
 @Singleton
 @Component(modules = {ApplicationModule.class, NetworkingModule.class})
@@ -20,4 +22,12 @@ public interface ApplicationComponent {
      * @return Instance of Subcomponent {@link PresentationComponent}
      */
     PresentationComponent newPresentationComponent(PresentationModule presentationModule);
+
+    /**
+     * Method that returns the Subcomponent {@link ServiceComponent}
+     *
+     * @param serviceModule Instance of {@link ServiceModule} which is the Module of {@link ServiceComponent}
+     * @return Instance of Subcomponent {@link ServiceComponent}
+     */
+    ServiceComponent newServiceComponent(ServiceModule serviceModule);
 }
