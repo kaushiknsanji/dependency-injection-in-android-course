@@ -7,10 +7,10 @@ import com.techyourchance.journeytodependencyinjection.screens.questionslist.Que
 import dagger.Subcomponent;
 
 /**
- * Dagger Subcomponent for exposing services from the Module {@link PresentationModule}
- * whose parent component is {@link ApplicationComponent}
+ * Dagger Subcomponent for exposing services from the Modules {@link PresentationModule}
+ * and {@link ViewModelModule} whose parent component is {@link ApplicationComponent}
  */
-@Subcomponent(modules = PresentationModule.class)
+@Subcomponent(modules = {PresentationModule.class, ViewModelModule.class})
 public interface PresentationComponent {
     /**
      * Method to inject services into the client {@link QuestionsListActivity}
