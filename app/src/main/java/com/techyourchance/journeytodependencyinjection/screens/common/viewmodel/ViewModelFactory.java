@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewModel;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewModel;
 
@@ -13,16 +12,19 @@ import com.techyourchance.journeytodependencyinjection.screens.questionslist.Que
  */
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-    //Use Case instance for Question Details
-    private final FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+    //ViewModel Instances
+    private final QuestionsListViewModel mQuestionsListViewModel;
+    private final QuestionDetailsViewModel mQuestionDetailsViewModel;
 
     /**
      * Constructor of {@link ViewModelFactory}
      *
-     * @param fetchQuestionDetailsUseCase Use Case instance for Question Details
+     * @param questionsListViewModel Instance of {@link QuestionsListViewModel}
+     * @param questionDetailsViewModel Instance of {@link QuestionDetailsViewModel}
      */
-    public ViewModelFactory(FetchQuestionDetailsUseCase fetchQuestionDetailsUseCase) {
-        mFetchQuestionDetailsUseCase = fetchQuestionDetailsUseCase;
+    public ViewModelFactory(QuestionsListViewModel questionsListViewModel, QuestionDetailsViewModel questionDetailsViewModel) {
+        mQuestionsListViewModel = questionsListViewModel;
+        mQuestionDetailsViewModel = questionDetailsViewModel;
     }
 
     /**
@@ -36,9 +38,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         ViewModel viewModel;
         if (modelClass.isAssignableFrom(QuestionDetailsViewModel.class)) {
-            viewModel = new QuestionDetailsViewModel(mFetchQuestionDetailsUseCase);
+            viewModel = mQuestionDetailsViewModel;
         } else if (modelClass.isAssignableFrom(QuestionsListViewModel.class)) {
-            viewModel = new QuestionsListViewModel();
+            viewModel = mQuestionsListViewModel;
         } else {
             throw new RuntimeException("Invalid ViewModel Class: " + modelClass);
         }
