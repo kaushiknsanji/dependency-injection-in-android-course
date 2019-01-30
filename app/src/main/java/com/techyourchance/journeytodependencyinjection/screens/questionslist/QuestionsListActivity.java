@@ -1,6 +1,8 @@
 package com.techyourchance.journeytodependencyinjection.screens.questionslist;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.techyourchance.journeytodependencyinjection.questions.FetchQuestionsListUseCase;
 import com.techyourchance.journeytodependencyinjection.questions.Question;
@@ -28,6 +30,8 @@ public class QuestionsListActivity extends BaseActivity implements
 
     private QuestionsListViewMvc mViewMvc;
 
+    private QuestionsListViewModel mQuestionsListViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,8 @@ public class QuestionsListActivity extends BaseActivity implements
 
         mViewMvc = mViewMvcFactory.newInstance(QuestionsListViewMvc.class, null);
         setContentView(mViewMvc.getRootView());
+
+        mQuestionsListViewModel = ViewModelProviders.of(this).get(QuestionsListViewModel.class);
     }
 
     @Override
@@ -43,7 +49,16 @@ public class QuestionsListActivity extends BaseActivity implements
         super.onStart();
         mViewMvc.registerListener(this);
         mFetchQuestionsListUseCase.registerListener(this);
-        mFetchQuestionsListUseCase.fetchLastActiveQuestionsAndNotify(NUM_OF_QUESTIONS_TO_FETCH);
+
+        if (mQuestionsListViewModel.getQuestions().isEmpty()) {
+            //Downloading the Questions data when not present
+            mFetchQuestionsListUseCase.fetchLastActiveQuestionsAndNotify(NUM_OF_QUESTIONS_TO_FETCH);
+            Toast.makeText(this, "Loaded from Use Case", Toast.LENGTH_SHORT).show();
+        } else {
+            //Binding the Questions data stored previously in the ViewModel
+            mViewMvc.bindQuestions(mQuestionsListViewModel.getQuestions());
+            Toast.makeText(this, "Loaded from ViewModel", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -76,6 +91,9 @@ public class QuestionsListActivity extends BaseActivity implements
      */
     @Override
     public void onFetchOfQuestionsSucceeded(List<Question> questions) {
+        //Store the list of questions in the ViewModel
+        mQuestionsListViewModel.setQuestions(questions);
+        //Bind the Questions data to the View
         mViewMvc.bindQuestions(questions);
     }
 
