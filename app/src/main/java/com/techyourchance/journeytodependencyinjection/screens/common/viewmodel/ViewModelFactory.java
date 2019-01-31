@@ -4,27 +4,25 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewModel;
-import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewModel;
+import java.util.Map;
+
+import javax.inject.Provider;
 
 /**
  * Factory class for instantiating {@link ViewModel}
  */
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-    //ViewModel Instances
-    private final QuestionsListViewModel mQuestionsListViewModel;
-    private final QuestionDetailsViewModel mQuestionDetailsViewModel;
+    private final Map<Class<? extends ViewModel>, Provider<ViewModel>> mProviderMap;
 
     /**
      * Constructor of {@link ViewModelFactory}
      *
-     * @param questionsListViewModel Instance of {@link QuestionsListViewModel}
-     * @param questionDetailsViewModel Instance of {@link QuestionDetailsViewModel}
+     * @param providerMap Dagger generated Provider Map of the form {@code Map<K, Provider<V>>}
+     *                    where <K> is a ViewModel Class and <V> is the ViewModel instance.
      */
-    public ViewModelFactory(QuestionsListViewModel questionsListViewModel, QuestionDetailsViewModel questionDetailsViewModel) {
-        mQuestionsListViewModel = questionsListViewModel;
-        mQuestionDetailsViewModel = questionDetailsViewModel;
+    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> providerMap) {
+        mProviderMap = providerMap;
     }
 
     /**
@@ -36,15 +34,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        ViewModel viewModel;
-        if (modelClass.isAssignableFrom(QuestionDetailsViewModel.class)) {
-            viewModel = mQuestionDetailsViewModel;
-        } else if (modelClass.isAssignableFrom(QuestionsListViewModel.class)) {
-            viewModel = mQuestionsListViewModel;
-        } else {
-            throw new RuntimeException("Invalid ViewModel Class: " + modelClass);
-        }
         //noinspection unchecked
-        return (T) viewModel;
+        return (T) mProviderMap.get(modelClass).get();
     }
 }
