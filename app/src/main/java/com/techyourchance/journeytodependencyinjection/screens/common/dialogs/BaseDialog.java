@@ -9,10 +9,10 @@ import com.techyourchance.journeytodependencyinjection.common.dependencyinjectio
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationModule;
 
 /**
- * A {@link DialogFragment} class which is the base class
+ * An Abstract {@link DialogFragment} class which is the base class
  * for all the Dialogs in this application.
  */
-public class BaseDialog extends DialogFragment {
+public abstract class BaseDialog extends DialogFragment {
 
     //Tracks if the PresentationComponent is used more than once in a Fragment to inject services
     private boolean mIsComponentUsed;

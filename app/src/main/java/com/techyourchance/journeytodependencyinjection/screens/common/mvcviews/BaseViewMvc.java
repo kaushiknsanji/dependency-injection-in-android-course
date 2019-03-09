@@ -8,11 +8,11 @@ import android.view.View;
 import com.techyourchance.journeytodependencyinjection.common.BaseObservable;
 
 /**
- * This is the base class which provides basic common functionality to MVC views implementations.
+ * An Abstract base class which provides basic common functionality to MVC views implementations.
  *
  * @param <L> the class of the listeners
  */
-public class BaseViewMvc<L> extends BaseObservable<L> implements ObservableViewMvc<L> {
+public abstract class BaseViewMvc<L> extends BaseObservable<L> implements ObservableViewMvc<L> {
 
     //The Root Android View of the MVC View
     private View mRootView;

@@ -1,6 +1,5 @@
 package com.techyourchance.journeytodependencyinjection.screens.common.activities;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,11 +9,10 @@ import com.techyourchance.journeytodependencyinjection.common.dependencyinjectio
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.presentation.PresentationModule;
 
 /**
- * An {@link AppCompatActivity} class which is the base class
+ * An Abstract {@link AppCompatActivity} class which is the base class
  * for all the activities in this application
  */
-@SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     //Tracks if the PresentationComponent is used more than once in an Activity to inject services
     private boolean mIsComponentUsed;
