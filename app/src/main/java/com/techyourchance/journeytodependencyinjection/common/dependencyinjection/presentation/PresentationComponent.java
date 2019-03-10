@@ -2,6 +2,7 @@ package com.techyourchance.journeytodependencyinjection.common.dependencyinjecti
 
 import com.techyourchance.journeytodependencyinjection.common.dependencyinjection.application.ApplicationComponent;
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsActivity;
+import com.techyourchance.journeytodependencyinjection.screens.questiondetails.SimpleFragment;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListActivity;
 
 import dagger.Subcomponent;
@@ -25,4 +26,11 @@ public interface PresentationComponent {
      * @param questionDetailsActivity Instance of {@link QuestionDetailsActivity}
      */
     void inject(QuestionDetailsActivity questionDetailsActivity);
+
+    /**
+     * Method to inject services into the client {@link SimpleFragment}
+     *
+     * @param simpleFragment Instance of {@link SimpleFragment}
+     */
+    void inject(SimpleFragment simpleFragment);
 }

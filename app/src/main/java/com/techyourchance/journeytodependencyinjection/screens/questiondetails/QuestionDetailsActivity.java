@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
 import com.techyourchance.journeytodependencyinjection.screens.common.activities.BaseActivity;
@@ -18,7 +19,7 @@ public class QuestionDetailsActivity extends BaseActivity implements
         QuestionDetailsViewMvc.Listener, QuestionDetailsViewModel.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
-
+    private static final String LOG_TAG = QuestionDetailsActivity.class.getSimpleName();
     @Inject
     ViewMvcFactory mViewMvcFactory;
     @Inject
@@ -39,6 +40,8 @@ public class QuestionDetailsActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate: Called");
+
         //Inject the QuestionDetailsActivity's dependencies
         getPresentationComponent().inject(this);
 
@@ -46,6 +49,12 @@ public class QuestionDetailsActivity extends BaseActivity implements
         setContentView(mViewMvc.getRootView());
 
         mQuestionDetailsViewModel = ViewModelProviders.of(this, mViewModelFactory).get(QuestionDetailsViewModel.class);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(mViewMvc.getFrameFragment().getId(), new SimpleFragment())
+                    .commit();
+        }
 
         //noinspection ConstantConditions
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);

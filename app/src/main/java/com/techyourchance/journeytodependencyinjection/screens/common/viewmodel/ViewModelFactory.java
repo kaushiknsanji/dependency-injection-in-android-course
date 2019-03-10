@@ -3,6 +3,7 @@ package com.techyourchance.journeytodependencyinjection.screens.common.viewmodel
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewModel;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewModel;
@@ -11,6 +12,8 @@ import com.techyourchance.journeytodependencyinjection.screens.questionslist.Que
  * Factory class for instantiating {@link ViewModel}
  */
 public class ViewModelFactory implements ViewModelProvider.Factory {
+
+    private static final String LOG_TAG = ViewModelFactory.class.getSimpleName();
 
     //ViewModel Instances
     private final QuestionsListViewModel mQuestionsListViewModel;
@@ -36,8 +39,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        Log.d(LOG_TAG, "create: Called");
         ViewModel viewModel;
         if (modelClass.isAssignableFrom(QuestionDetailsViewModel.class)) {
+            Log.d(LOG_TAG, "create: Called for QuestionDetailsViewModel");
             viewModel = mQuestionDetailsViewModel;
         } else if (modelClass.isAssignableFrom(QuestionsListViewModel.class)) {
             viewModel = mQuestionsListViewModel;

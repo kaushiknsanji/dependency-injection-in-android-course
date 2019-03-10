@@ -3,6 +3,7 @@ package com.techyourchance.journeytodependencyinjection.screens.questiondetails;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class QuestionDetailsViewMvcImpl extends BaseViewMvc<QuestionDetailsViewM
     private final TextView mTxtUserDisplayName;
     private final ImageView mImgUserAvatar;
     private TextView mTxtQuestionBody;
+    private FrameLayout mFrameFragment;
 
     public QuestionDetailsViewMvcImpl(LayoutInflater layoutInflater, ViewGroup container, ImageLoader imageLoader) {
         setRootView(layoutInflater.inflate(R.layout.layout_question_details, container, false));
@@ -30,6 +32,7 @@ public class QuestionDetailsViewMvcImpl extends BaseViewMvc<QuestionDetailsViewM
         mTxtQuestionBody = findViewById(R.id.txt_question_body);
         mTxtUserDisplayName = findViewById(R.id.txt_user_display_name);
         mImgUserAvatar = findViewById(R.id.img_user_avatar);
+        mFrameFragment = findViewById(R.id.frame_fragment);
     }
 
     /**
@@ -49,5 +52,15 @@ public class QuestionDetailsViewMvcImpl extends BaseViewMvc<QuestionDetailsViewM
 
         mTxtUserDisplayName.setText(question.getUserDisplayName());
         mImageLoader.loadImage(question.getUserAvatarUrl(), mImgUserAvatar);
+    }
+
+    /**
+     * Method that returns the container view 'R.id.frame_fragment' for Fragments
+     *
+     * @return Instance of {@link FrameLayout} which is a container view for Fragments
+     */
+    @Override
+    public FrameLayout getFrameFragment() {
+        return mFrameFragment;
     }
 }

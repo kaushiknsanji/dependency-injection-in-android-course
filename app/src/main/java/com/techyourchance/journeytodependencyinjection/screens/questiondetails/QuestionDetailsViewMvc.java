@@ -1,5 +1,7 @@
 package com.techyourchance.journeytodependencyinjection.screens.questiondetails;
 
+import android.widget.FrameLayout;
+
 import com.techyourchance.journeytodependencyinjection.questions.QuestionDetails;
 import com.techyourchance.journeytodependencyinjection.screens.common.mvcviews.ObservableViewMvc;
 
@@ -14,6 +16,13 @@ public interface QuestionDetailsViewMvc extends ObservableViewMvc<QuestionDetail
      * @param question Instance of {@link QuestionDetails}
      */
     void bindQuestion(QuestionDetails question);
+
+    /**
+     * Method that returns the container view 'R.id.frame_fragment' for Fragments
+     *
+     * @return Instance of {@link FrameLayout} which is a container view for Fragments
+     */
+    FrameLayout getFrameFragment();
 
     /**
      * Listener for user actions

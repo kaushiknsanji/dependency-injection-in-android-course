@@ -3,4 +3,7 @@
     <string name="server_error_dialog_title">Server Error</string>
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
+
+    <string name="fragment_message_viewmodels_same">ViewModels are same!?</string>
+    <string name="fragment_message_viewmodels_different">ViewModels are different</string>
 </resources>
