@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,6 @@ import javax.inject.Inject;
  * whose Activity is {@link QuestionDetailsActivity}
  */
 public class SimpleFragment extends BaseFragment {
-
-    private static final String LOG_TAG = SimpleFragment.class.getSimpleName();
 
     @Inject
     ViewModelFactory mViewModelFactory;
@@ -53,15 +50,14 @@ public class SimpleFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(LOG_TAG, "onCreate: Called");
 
         //Inject the SimpleFragment's dependencies
         getPresentationComponent().inject(this);
 
         //Get the Activity shared ViewModel Instance
-        //mViewModelActivity = ViewModelProviders.of(requireActivity(), mViewModelFactory).get(QuestionDetailsViewModel.class);
+        mViewModelActivity = ViewModelProviders.of(requireActivity(), mViewModelFactory).get(QuestionDetailsViewModel.class);
         //Get the Fragment ViewModel Instance
-        //mViewModelFragment = ViewModelProviders.of(this, mViewModelFactory).get(QuestionDetailsViewModel.class);
+        mViewModelFragment = ViewModelProviders.of(this, mViewModelFactory).get(QuestionDetailsViewModel.class);
     }
 
 
@@ -86,13 +82,7 @@ public class SimpleFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "onCreateView: Called");
         TextView textView = new TextView(requireContext());
-
-        //Get the Activity shared ViewModel Instance
-        mViewModelActivity = ViewModelProviders.of(requireActivity(), mViewModelFactory).get(QuestionDetailsViewModel.class);
-        //Get the Fragment ViewModel Instance
-        mViewModelFragment = ViewModelProviders.of(this, mViewModelFactory).get(QuestionDetailsViewModel.class);
 
         if (mViewModelActivity.equals(mViewModelFragment)) {
             textView.setText(R.string.fragment_message_viewmodels_same);
@@ -103,22 +93,4 @@ public class SimpleFragment extends BaseFragment {
         return textView;
     }
 
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.  It is also useful for fragments that use
-     * {@link #setRetainInstance(boolean)} to retain their instance,
-     * as this callback tells the fragment when it is fully associated with
-     * the new activity instance.  This is called after {@link #onCreateView}
-     * and before {@link #onViewStateRestored(Bundle)}.
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
-     */
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(LOG_TAG, "onActivityCreated: Called");
-    }
 }

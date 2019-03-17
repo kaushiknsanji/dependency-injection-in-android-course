@@ -5,6 +5,8 @@ import com.techyourchance.journeytodependencyinjection.screens.common.viewmodel.
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewModel;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewModel;
 
+import javax.inject.Provider;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,14 +19,15 @@ public class ViewModelModule {
     /**
      * Method that creates and returns an instance of {@link ViewModelFactory}
      *
-     * @param questionsListViewModel Instance of {@link QuestionsListViewModel}
-     * @param questionDetailsViewModel Instance of {@link QuestionDetailsViewModel}
+     * @param questionsListViewModelProvider {@link Provider} wrapped instance of {@link QuestionsListViewModel}
+     * @param questionDetailsViewModelProvider {@link Provider} wrapped instance of {@link QuestionDetailsViewModel}
      *
      * @return Instance of {@link ViewModelFactory} required for instantiating ViewModels
      */
     @Provides
-    ViewModelFactory getViewModelFactory(QuestionsListViewModel questionsListViewModel, QuestionDetailsViewModel questionDetailsViewModel) {
-        return new ViewModelFactory(questionsListViewModel, questionDetailsViewModel);
+    ViewModelFactory getViewModelFactory(Provider<QuestionsListViewModel> questionsListViewModelProvider,
+                                         Provider<QuestionDetailsViewModel> questionDetailsViewModelProvider) {
+        return new ViewModelFactory(questionsListViewModelProvider, questionDetailsViewModelProvider);
     }
 
     /**

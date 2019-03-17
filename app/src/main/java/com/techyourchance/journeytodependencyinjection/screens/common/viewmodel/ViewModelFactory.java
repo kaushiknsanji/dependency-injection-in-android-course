@@ -3,31 +3,30 @@ package com.techyourchance.journeytodependencyinjection.screens.common.viewmodel
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.techyourchance.journeytodependencyinjection.screens.questiondetails.QuestionDetailsViewModel;
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewModel;
+
+import javax.inject.Provider;
 
 /**
  * Factory class for instantiating {@link ViewModel}
  */
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-    private static final String LOG_TAG = ViewModelFactory.class.getSimpleName();
-
-    //ViewModel Instances
-    private final QuestionsListViewModel mQuestionsListViewModel;
-    private final QuestionDetailsViewModel mQuestionDetailsViewModel;
+    //Provider wrapped ViewModel Instances
+    private final Provider<QuestionsListViewModel> mQuestionsListViewModelProvider;
+    private final Provider<QuestionDetailsViewModel> mQuestionDetailsViewModelProvider;
 
     /**
      * Constructor of {@link ViewModelFactory}
-     *
-     * @param questionsListViewModel Instance of {@link QuestionsListViewModel}
-     * @param questionDetailsViewModel Instance of {@link QuestionDetailsViewModel}
+     * @param questionsListViewModelProvider {@link Provider} wrapped instance of {@link QuestionsListViewModel}
+     * @param questionDetailsViewModelProvider {@link Provider} wrapped instance of {@link QuestionDetailsViewModel}
      */
-    public ViewModelFactory(QuestionsListViewModel questionsListViewModel, QuestionDetailsViewModel questionDetailsViewModel) {
-        mQuestionsListViewModel = questionsListViewModel;
-        mQuestionDetailsViewModel = questionDetailsViewModel;
+    public ViewModelFactory(Provider<QuestionsListViewModel> questionsListViewModelProvider,
+                            Provider<QuestionDetailsViewModel> questionDetailsViewModelProvider) {
+        mQuestionsListViewModelProvider = questionsListViewModelProvider;
+        mQuestionDetailsViewModelProvider = questionDetailsViewModelProvider;
     }
 
     /**
@@ -39,13 +38,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        Log.d(LOG_TAG, "create: Called");
         ViewModel viewModel;
         if (modelClass.isAssignableFrom(QuestionDetailsViewModel.class)) {
-            Log.d(LOG_TAG, "create: Called for QuestionDetailsViewModel");
-            viewModel = mQuestionDetailsViewModel;
+            viewModel = mQuestionDetailsViewModelProvider.get();
         } else if (modelClass.isAssignableFrom(QuestionsListViewModel.class)) {
-            viewModel = mQuestionsListViewModel;
+            viewModel = mQuestionsListViewModelProvider.get();
         } else {
             throw new RuntimeException("Invalid ViewModel Class: " + modelClass);
         }
