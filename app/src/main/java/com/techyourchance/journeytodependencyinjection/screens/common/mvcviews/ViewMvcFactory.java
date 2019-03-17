@@ -11,28 +11,29 @@ import com.techyourchance.journeytodependencyinjection.screens.questionslist.Que
 import com.techyourchance.journeytodependencyinjection.screens.questionslist.QuestionsListViewMvcImpl;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 /**
  * Factory class for providing MVC Views
  */
 public class ViewMvcFactory {
 
-    //LayoutInflater instance to inflate views
-    private final LayoutInflater mLayoutInflater;
+    //Provider wrapped LayoutInflater instance to inflate views
+    private final Provider<LayoutInflater> mLayoutInflaterProvider;
 
-    //Instance of ImageLoader to download images
-    private final ImageLoader mImageLoader;
+    //Provider wrapped instance of ImageLoader to download images
+    private final Provider<ImageLoader> mImageLoaderProvider;
 
     /**
      * Constructor of {@link ViewMvcFactory}
      *
-     * @param layoutInflater Instance of {@link LayoutInflater} for inflating the views
-     * @param imageLoader Instance of {@link ImageLoader} to download images
+     * @param layoutInflaterProvider {@link Provider} wrapped instance of {@link LayoutInflater} for inflating the views
+     * @param imageLoaderProvider {@link Provider} wrapped instance of {@link ImageLoader} to download images
      */
     @Inject
-    public ViewMvcFactory(LayoutInflater layoutInflater, ImageLoader imageLoader) {
-        mLayoutInflater = layoutInflater;
-        mImageLoader = imageLoader;
+    public ViewMvcFactory(Provider<LayoutInflater> layoutInflaterProvider, Provider<ImageLoader> imageLoaderProvider) {
+        mLayoutInflaterProvider = layoutInflaterProvider;
+        mImageLoaderProvider = imageLoaderProvider;
     }
 
     /**
@@ -48,9 +49,9 @@ public class ViewMvcFactory {
         ViewMvc viewMvc;
 
         if (mvcViewClass == QuestionsListViewMvc.class) {
-            viewMvc = new QuestionsListViewMvcImpl(mLayoutInflater, container);
+            viewMvc = new QuestionsListViewMvcImpl(mLayoutInflaterProvider.get(), container);
         } else if (mvcViewClass == QuestionDetailsViewMvc.class) {
-            viewMvc = new QuestionDetailsViewMvcImpl(mLayoutInflater, container, mImageLoader);
+            viewMvc = new QuestionDetailsViewMvcImpl(mLayoutInflaterProvider.get(), container, mImageLoaderProvider.get());
         } else {
             throw new IllegalArgumentException("Unsupported MVC view class " + mvcViewClass);
         }
